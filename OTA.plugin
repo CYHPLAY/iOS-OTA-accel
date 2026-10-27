@@ -1,5 +1,5 @@
 #!name = iOS OTA 更新加速
-#!desc = 劫持苹果OTA域名走阿里DNS解析国内ks-cdn节点，提升系统更新下载速度，流量强制直连
+#!desc = 劫持苹果OTA域名走阿里DNS解析国内ks-cdn节点，提升系统更新下载速度，流量强制直连；App Store下载走金山云CDN
 #!author = CYHPLAY
 #!system = iOS,macOS
 #!loon_version = 3.5.0
@@ -8,6 +8,31 @@
 
 [General]
 hijack-dns = updates.g.aaplimg.com:53,updates.cdn-apple.com:53,updates.cdn-apple.com.akadns.net:53,updates.cdn-apple.com.download.ks-cdn.com:53,updates.jsd.ksyunv5.com:53 -> 223.5.5.5
+
+[Host]
+# App Store 下载加速 - 直接映射CNAME到国内CDN
+# 金山云CDN（默认，CDN结果为本省）
+iosapps.itunes.apple.com = iosapps.itunes.apple.com.download.ks-cdn.com
+# 网宿科技CDN（本省或隔壁省份）
+# iosapps.itunes.apple.com = hls.itunes.apple.com.mwcname.com
+# 阿里昆仑CDN（节点较分散）
+# iosapps.itunes.apple.com = iosapps.itunes.apple.com.m.alikunlun.net
+
+# ============================================================
+# OTA 在线升级场景 DNS 解析链（前三条为唯一入口）
+#   updates.cdn-apple.com
+#   updates.cdn-apple.com.akadns.net
+#   updates.g.aaplimg.com
+# 可选 CDN 别名（任选其一）：
+#   updates.cdn-apple.com.w.kunlunca.com        # 昆仑
+#   updates.cdn-apple.com.download.ks-cdn.com   # 金山（默认）
+#   updates.cdn-apple.com.mwcname.com           # 网宿
+# 此方法同样适用于 iOS 在线升级及其他 CDN 场景。
+# 提示：AdGuard Home 等支持中间记录映射的工具可直接映射
+#   iosapps.itunes.g.aaplimg.com 的别名到CDN域名（与上方 Loon
+#   映射的 iosapps.itunes.apple.com 是不同域名）；Loon 的中间
+#   记录映射需等待开发者支持，当前仅能用上方方法。
+# ============================================================
 
 [Rule]
 DOMAIN,updates.g.aaplimg.com,DIRECT
