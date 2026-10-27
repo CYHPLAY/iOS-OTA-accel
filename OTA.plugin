@@ -1,0 +1,15 @@
+#!name = iOS OTA 更新加速
+#!desc = 劫持苹果OTA域名走阿里DNS解析国内CDN，提升系统更新下载速度，流量强制直连
+#!author = CYHPLAY
+#!system = iOS,macOS
+#!loon_version = 3.5.0
+#!tag = 工具,OTA加速
+#!type = normal
+
+[General]
+hijack-dns = updates.g.aaplimg.com:53,updates.cdn-apple.com:53,updates.cdn-apple.com.akadns.net:53 -> 223.5.5.5
+
+[Rule]
+DOMAIN,updates.g.aaplimg.com,DIRECT
+DOMAIN,updates.cdn-apple.com,DIRECT
+DOMAIN,updates.cdn-apple.com.akadns.net,DIRECT
